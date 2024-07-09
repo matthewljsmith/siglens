@@ -543,7 +543,7 @@ async function getColumns() {
 
   const res = await $.ajax({
     method: "post",
-    url: "api/search/",
+    url: "https://" + location.hostname + "/api/search/",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       Accept: "*/*",
