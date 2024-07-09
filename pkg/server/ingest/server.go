@@ -30,6 +30,7 @@ import (
 	"github.com/siglens/siglens/pkg/config"
 	"github.com/siglens/siglens/pkg/ingest"
 	"github.com/siglens/siglens/pkg/segment/writer"
+	"github.com/siglens/siglens/pkg/server/middleware"
 	server_utils "github.com/siglens/siglens/pkg/server/utils"
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasthttp/pprofhandler"
@@ -127,7 +128,7 @@ func (hs *ingestionServerCfg) Run() (err error) {
 	}
 
 	s := &fasthttp.Server{
-		Handler:            cors(hs.router.Handler),
+		Handler:            cors(middleware.BasicAuthMiddleware(hs.router.Handler)),
 		Name:               hs.Config.Name,
 		ReadBufferSize:     hs.Config.ReadBufferSize,
 		MaxConnsPerIP:      hs.Config.MaxConnsPerIP,
@@ -166,7 +167,7 @@ func (hs *ingestionServerCfg) RunSafeServer() (err error) {
 	}
 
 	s := &fasthttp.Server{
-		Handler:            cors(hs.router.Handler),
+		Handler:            cors(middleware.BasicAuthMiddleware(hs.router.Handler)),
 		Name:               hs.Config.Name,
 		ReadBufferSize:     hs.Config.ReadBufferSize,
 		MaxConnsPerIP:      hs.Config.MaxConnsPerIP,

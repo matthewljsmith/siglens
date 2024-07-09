@@ -31,6 +31,7 @@ import (
 	"github.com/siglens/siglens/pkg/config"
 	"github.com/siglens/siglens/pkg/hooks"
 	"github.com/siglens/siglens/pkg/segment/query"
+	"github.com/siglens/siglens/pkg/server/middleware"
 	server_utils "github.com/siglens/siglens/pkg/server/utils"
 	tracing "github.com/siglens/siglens/pkg/tracing"
 	"github.com/siglens/siglens/pkg/utils"
@@ -291,7 +292,7 @@ func (hs *queryserverCfg) Run(htmlTemplate *htmltemplate.Template, textTemplate 
 	}
 
 	s := &fasthttp.Server{
-		Handler:            cors(hs.Router.Handler),
+		Handler:            cors(middleware.BasicAuthMiddleware(hs.Router.Handler)),
 		Name:               hs.Config.Name,
 		ReadBufferSize:     hs.Config.ReadBufferSize,
 		MaxConnsPerIP:      hs.Config.MaxConnsPerIP,
@@ -362,7 +363,7 @@ func (hs *queryserverCfg) RunSafeServer() error {
 	}
 
 	s := &fasthttp.Server{
-		Handler:            cors(hs.Router.Handler),
+		Handler:            cors(middleware.BasicAuthMiddleware(hs.Router.Handler)),
 		Name:               hs.Config.Name,
 		ReadBufferSize:     hs.Config.ReadBufferSize,
 		MaxConnsPerIP:      hs.Config.MaxConnsPerIP,
